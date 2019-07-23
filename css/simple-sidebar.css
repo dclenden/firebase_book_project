@@ -7,6 +7,27 @@ body {
   overflow-x: hidden;
 }
 
+.logo{
+	width : 250px;
+	height : 200px;
+}
+
+#btnLogout {
+  display: none;
+}
+
+#btnLogin {
+  display: inline-block;
+}
+
+#thLogged {
+  display: table-cell;
+}
+
+.isLogged {
+  display: none;
+}
+
 #sidebar-wrapper {
   min-height: 100vh;
   margin-left: -15rem;
@@ -30,7 +51,7 @@ body {
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
+  margin-left: 10;
 }
 
 @media (min-width: 768px) {
@@ -44,6 +65,7 @@ body {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
+    margin-left: -18rem;
   }
 }
+
