@@ -21,6 +21,8 @@ function renderBook(doc) {
   removeButton.classList.add('btn');
   removeButton.classList.add('btn-danger');
   removeButton.classList.add('dlt_btn');  
+  //removeButton.innerHTML='<i class="fa fa-close"></i>';
+  removeButton.classList.add('col-4');
 
   let editButton = document.createElement('button');
   editButton.innerText = "Edit";
@@ -29,6 +31,8 @@ function renderBook(doc) {
   editButton.classList.add('edit_btn');  
   editButton.dataset.target = "#edit_book";
   $(editButton).attr("data-toggle", "modal");
+  //editButton.innerHTML='<i class="fa fa-pencil"></i>';
+  editButton.classList.add('col-4');
 
   tr.setAttribute('data-id', doc.id);
   isbn.textContent = doc.data().isbn;
@@ -45,7 +49,6 @@ function renderBook(doc) {
 editButton.onclick = function() {
   doc_id = doc.id;
   //console.log("Edit button clicked for doc", doc.id);
-  
 }
   
 // Remove button
@@ -54,7 +57,6 @@ removeButton.onclick = function() {
 
 	db.collection("books").doc(doc.id).delete().then(function() {
     console.log("Document successfully deleted!");
-	renderAllBooks();
 	}).catch(function(error) {
     console.error("Error removing document: ", error);
 
@@ -168,8 +170,8 @@ db.collection('books').orderBy('title').onSnapshot(snapshot => {
       trChildren[5].textContent = (change.doc.data().course_lead_name);
       trChildren[6].textContent = (change.doc.data().notes);
 
-      for(i=0;i<tr.children.length;i+=1){
-        tr.removeChilrd(tr.childNodes[i]);
+      for(i=0;i<tr.children.length-1;i+=1){
+        tr.removeChild(tr.childNodes[i]);
       }
 
       for(i=0;i<trChildren.length;i+=1){
@@ -241,14 +243,6 @@ btnLogOut.addEventListener('click', e => {
         //$('.isLogged').css({'display':'table-cell'});
         $('#thLogged').css('display', 'table-cell');
         //btnSignUp.style.display = 'none';
-        var reload = 0;
-        if(performance.navigation.type == 1 && reload != 1){
-          $('.isLogged').css({'display': 'none'});
-          firebase.auth().signOut();
-          $('#btnLogin').css('display', 'inline-block');
-          $('#btnLogout').css('display', 'none');
-          reload = 1;
-        }
         
     }
     else {
