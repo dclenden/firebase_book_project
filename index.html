@@ -20,18 +20,192 @@
 
 <body>
 
+<!-- hidden sign in  box-->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="email" id="defaultForm-email" class="txtEmail form-control validate">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">Your email</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-lock prefix grey-text"></i>
+          <input type="password" id="defaultForm-pass" class="txtPassword form-control validate">
+          <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button id="signInSubmit" class="btn btn-default" data-dismiss="modal">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add book button -->
+
+<div class="modal fade" id="add_book" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Add Book</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="isbn" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="isbn">ISBN</label>
+        </div>
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="title" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="title">Title</label>
+        </div>
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="semester" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="semester">Semester</label>
+        </div>
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="C-num" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="C-num">Course Number</label>
+        </div>
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="C-title" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="C-title">Course Title</label>
+        </div>
+		
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="C-lead" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="C-lead">Course Lead</label>
+        </div>
+		
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="C-lead name" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="C-lead name">Course Lead Name</label>
+        </div>
+        
+		<div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="notes" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="notes">Notes</label>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center" data-dismiss="modal" >
+        <button class="btn btn-default" onclick="addbook()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Edit book button -->
+
+<div class="modal fade" id="edit_book" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edit Book</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_isbn" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_isbn">ISBN</label>
+        </div>
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_title" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_title">Title</label>
+        </div>
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_semester" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_semester">Semester</label>
+        </div>
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_C-num" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_C-num">Course Number</label>
+        </div>
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_C-title" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_C-title">Course Title</label>
+        </div>
+    
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_C-lead" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_C-lead">Course Lead</label>
+        </div>
+    
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_C-lead-name" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_C-lead name">Course Lead Name</label>
+        </div>
+        
+    <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="text" id="edit_notes" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="edit_notes">Notes</label>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center" data-dismiss="modal" >
+        <button id="edit_submit" class="btn btn-default">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Start Bootstrap </div>
-      <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+    <div class="bg-white border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading"> 
+	  <img class = "logo" src="del_tech.jpg">
+	  <!--DDTC Textbook Database -->
+	  </div>
+	  
+	  <div class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-action bg-white">Home</a>
+        <a href="#" class="list-group-item list-group-item-action bg-white">Contact Us</a>
+        <a href="#" class="list-group-item list-group-item-action bg-white">Del Tech</a>
+        
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -41,7 +215,11 @@
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
+		<div class="text-center ml-1">
+    <a href="" id="btnLogin" class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">Sign In</a>
+    <a href="" id="btnLogout" class="btn btn-secondary hidden">Logout</a>
+    </div>
+		
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,16 +228,12 @@
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li>
               <div class="input-group col-md-4">
-                <input class="form-control py-2" type="search" value="search" id="example-search-input">
-                <span class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </span>
+			    <input class="form-control py-2" type="text" id="example-search-input" onkeyup="mySearchFunction()" placeholder="Search" title="Search for a book">
+                <!---<input class="form-control py-2" type="search" value="search" id="example-search-input">--->
               </div>
             </li>
             <li class="nav-item active">
-              <a class="add-book btn btn-outline-primary" href="#">Add Book</a>
+              <a href="" class="add-book btn btn-outline-primary" data-toggle="modal" data-target="#add_book">Add Book</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -92,9 +266,11 @@
       <th scope="col">Course Lead</th>
       <th scope="col">Course Lead Name</th>
       <th scope="col">Notes</th>
-      <th class="isLogged"><!--<button class="btn btn-primary edit_btn">edit</button><button class="btn btn-danger dlt_btn">delete</button>--></th>
+      <th id="thLogged" class="isLogged"><!--<button class="btn btn-primary edit_btn">edit</button><button class="btn btn-danger dlt_btn">delete</button>--></th>
     </tr>
   </thead>
+  <tbody id="book-table-body">
+  </tbody>
 </table>
       <div class="container-fluid">
 
@@ -120,6 +296,7 @@
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#config-web-app -->
 
@@ -138,7 +315,9 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
   </script>
+
   <script src="script.js"></script>
+
 </body>
 
 </html>
