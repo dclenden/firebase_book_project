@@ -44,11 +44,9 @@ function renderBook(doc) {
   
 editButton.onclick = function() {
   doc_id = doc.id;
-  console.log("Edit button clicked for doc", doc.id);
+  //console.log("Edit button clicked for doc", doc.id);
   
 }
-
-console.log(doc_id);
   
 // Remove button
 
@@ -62,13 +60,6 @@ removeButton.onclick = function() {
 
 });
 			
-}
-
-function editBook() {
-  db.collection("books").doc(doc_id).update({
-    isbn: 0,
-  });
-  renderAllBooks();
 }
 
   //add book
@@ -86,7 +77,6 @@ function editBook() {
   tr.appendChild(course_lead_name);
   tr.appendChild(notes);
   tr.appendChild(hidden_tab);
-
   bookTable.appendChild(tr);
 }
 
@@ -114,7 +104,6 @@ function addbook(){
   document.getElementById("C-lead").value = '';
   document.getElementById("C-lead name").value = '';
   document.getElementById("notes").value = '';
-	renderAllBooks();
 	
 })
 
@@ -145,16 +134,60 @@ db.collection('books').add({
 
 // This refreshes the page -> gotta fix this with AJAX though.
 
-function renderAllBooks(){
+/*function renderAllBooks(){
 	bookTable.innerHTML = "";
-db.collection('books').get().then((snapshot) => {
+db.collection('books').orderBy('title').get().then((snapshot) => {
   snapshot.docs.forEach(doc => {
     renderBook(doc);
   });
 });
-}
+}*/
 
-renderAllBooks();
+// Real-time listener
+db.collection('books').orderBy('title').onSnapshot(snapshot => {
+  let changes = snapshot.docChanges();
+  changes.forEach(change => {
+    if(change.type == 'added') {
+      renderBook(change.doc);
+    }
+    else if(change.type == 'removed') {
+      let tr = bookTable.querySelector('[data-id=' + change.doc.id + ']');
+      bookTable.removeChild(tr);
+    }
+    else if(change.type == 'modified') {
+      let tr = bookTable.querySelector('[data-id=' + change.doc.id + ']');
+      trChildren = tr.children;
+      for(i=0;i<trChildren.length-1;i+=1){
+        trChildren[i].textContent='';
+      }
+      trChildren[0].textContent = (change.doc.data().isbn);
+      trChildren[1].textContent = (change.doc.data().semester);
+      trChildren[2].textContent = (change.doc.data().course_num);
+      trChildren[3].textContent = (change.doc.data().course_title);
+      trChildren[4].textContent = (change.doc.data().course_lead);
+      trChildren[5].textContent = (change.doc.data().course_lead_name);
+      trChildren[6].textContent = (change.doc.data().notes);
+
+      for(i=0;i<tr.children.length;i+=1){
+        tr.removeChilrd(tr.childNodes[i]);
+      }
+
+      for(i=0;i<trChildren.length;i+=1){
+        tr.append(trChildren[i]);
+      }
+      /*tr.appendChild(isbn);
+  tr.appendChild(title);
+  tr.appendChild(semester);
+  tr.appendChild(course_num);
+  tr.appendChild(course_title);
+  tr.appendChild(course_lead);
+  tr.appendChild(course_lead_name);
+  tr.appendChild(notes);
+  tr.appendChild(hidden_tab);*/
+    }
+  });
+});
+
 
 // End book database manipulation
 
@@ -165,6 +198,7 @@ const txtPassword = document.getElementById('defaultForm-pass');
 const btnLogin = document.getElementById('signInSubmit');
 // const btnSignUp = document.getElementById('btnSignUp');
 const btnLogOut = document.getElementById('btnLogout');
+const btnSearch = document.getElementById('btnSearch');
 
 // Add login event
 btnLogin.addEventListener('click', e => {
@@ -193,7 +227,6 @@ btnLogOut.addEventListener('click', e => {
   // ISSUE: (HIGH PRIORITY) -> .isLogged tab does not persist on refresh of page. Need to Asynchronously fix this OR use cookies some how to 
   // persist the state of the buttons being removed / added on state change. 
 
-
   firebase.auth().onAuthStateChanged(function(user) {
     if(user) {
         console.log(user);
@@ -208,17 +241,82 @@ btnLogOut.addEventListener('click', e => {
         //$('.isLogged').css({'display':'table-cell'});
         $('#thLogged').css('display', 'table-cell');
         //btnSignUp.style.display = 'none';
+        var reload = 0;
+        if(performance.navigation.type == 1 && reload != 1){
+          $('.isLogged').css({'display': 'none'});
+          firebase.auth().signOut();
+          $('#btnLogin').css('display', 'inline-block');
+          $('#btnLogout').css('display', 'none');
+          reload = 1;
+        }
         
     }
     else {
         console.log('not logged in');
         btnLogin.style.display = 'inline-block';
-        $('.isLogged').css({'display': 'none'});
-        //btnSignUp.style.display = 'inline-block';
-        //hidden_tab.style.display = 'none';
+          $('.isLogged').css({'display': 'none'});
+          //btnSignUp.style.display = 'inline-block';
+          //hidden_tab.style.display = 'none';
     }
   });
 
+// Edit button
+$('#edit_book').on('show.bs.modal', function(e) {
+    console.log(doc_id);
+    docRef = db.collection('books').doc(doc_id);
+    docRef.get().then(function(doc) {
+    $('#edit_isbn').val(doc.data().isbn);
+    $('#edit_title').val(doc.data().title);
+    $('#edit_semester').val(doc.data().semester);
+    $('#edit_C-num').val(doc.data().course_num);
+    $('#edit_C-lead').val(doc.data().course_lead);
+    $('#edit_C-title').val(doc.data().course_title);
+    $('#edit_C-lead-name').val(doc.data().course_lead_name);
+    $('#edit_notes').val(doc.data().notes);
+    });
+  document.getElementById('edit_submit').addEventListener('click', e => {
+    e.preventDefault();
+    docRef.update({
+      isbn: $('#edit_isbn').val(),
+      title: $('#edit_title').val(),
+      semester: $('#edit_semester').val(),
+      course_num: $('#edit_C-num').val(),
+      course_lead: $('#edit_C-lead').val(),
+      course_title: $('#edit_C-title').val(),
+      coures_lead_name: $('#edit_C-lead-name').val(),
+      notes: $('#edit_notes').val(),
+    });
+  });
+  
+});
 
+//Search function from https://www.w3schools.com/howto/howto_js_filter_table.asp
+function mySearchFunction() {
+  // Declare variables 
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("example-search-input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("book-table");
+  tr = table.getElementsByTagName("tr");
 
-
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+	//Temp is a variable that sees if a single column per row matches the search. If a column matches, it's set to 1 and tested at the end of the column
+	temp = 0;
+	//The .length-1 is to account for the edit/delete buttons so the innertext of those are not included
+	for (j = 0; j < tr[i].getElementsByTagName("td").length - 1; j++){
+		td = tr[i].getElementsByTagName("td")[j];
+		console.log("td: " + td.innerText);
+		if (td) {
+		  txtValue = td.textContent || td.innerText;
+		  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			tr[i].style.display = "";
+			temp = 1;
+			//This is where the temp variable is tested. 0 if no columns match, when j is 7 it's at the last column.
+		  }else if(j == 7 && temp == 0){
+			tr[i].style.display = "none";
+		  }
+		} 
+	}
+  }
+}
